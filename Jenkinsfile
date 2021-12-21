@@ -40,7 +40,7 @@ errors = null
     stage("Build Package") {
       steps {
         script {
-          def jenkinsUtils = load "groovy/NewJenkinsUtils.groovy"
+          def jenkinsUtils = load "groovy/JenkinsUtils.groovy"
           jenkinsUtils.buildPackage("version-manager.properties")
         }
       }
@@ -49,7 +49,7 @@ errors = null
     stage("Inspect Package") {
       steps {
         script {
-          def jenkinsUtils = load "groovy/NewJenkinsUtils.groovy"
+          def jenkinsUtils = load "groovy/JenkinsUtils.groovy"
           jenkinsUtils.inspectPackage()
         }
       }
