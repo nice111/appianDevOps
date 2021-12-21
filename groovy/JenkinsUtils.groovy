@@ -37,25 +37,45 @@ void retrieveLogs(propertyFile) {
 }
 
 void buildPackage(versionPropertyFile) {
-  sh "cp devops/adm/" + versionPropertyFile + " adm/appian-version-client/version-manager.properties"
+  def status = bat(script:"robocopy devops/adm adm/appian-version-client " + versionPropertyFile,returnStatus:true)
+  println "ROBOCOPY returned ${status}"
   dir("adm/appian-version-client") {
-    setProperty("version-manager.properties", "vcUsername", "${REPOUSERNAME}")
-    setProperty("version-manager.properties", "vcPassword", "${REPOPASSWORD}")
-    setProperty("version-manager.properties", "appianObjectsRepoPath", "appian/applications/${APPLICATIONNAME}")
-    sh "./version-application.sh -package_path ../app-package.zip -local_repo_path ./local-repo"
+    //setProperty("version-manager.properties", "vcUsername", "${REPOUSERNAME}")
+    //setProperty("version-manager.properties", "vcPassword", "${REPOPASSWORD}")
+    //setProperty("version-manager.properties", "appianObjectsRepoPath", "appian/applications/${APPLICATIONNAME}")
+    bat(script:"version-application.bat -appian_objects_repo_path \"appian/applications/$APPLICATIONNAME\" -vc_username \"$REPOUSERNAME\" -vc_password \"$REPOPASSWORD\" -package_path ../app-package.zip -local_repo_path \"C:/Users/nick.terweeme/localAppian\"" )
   }
 }
-
-void importPackage(importPropertyFile, customProperties) {
-  sh "cp devops/adm/" + importPropertyFile + " adm/appian-import-client/import-manager.properties"
-  dir("adm/appian-import-client") {
-    setProperty("import-manager.properties", "username", "${SITEUSERNAME}")
-    setProperty("import-manager.properties", "password", "${SITEPASSWORD}")
-    if (fileExists("../../appian/properties/${APPLICATIONNAME}/" + customProperties)) {
-      setProperty("import-manager.properties", "importCustomizationPath", "../../appian/properties/${APPLICATIONNAME}/" + customProperties)
-    }
-    sh "./deploy-application.sh -application_path ../app-package.zip"
+void inspectPackage() {
+  
+  inspectionUrl = SITEBASEURL +"/deployment-management/v1/inspections"
+  String response=bat( script:"curl --location  --request POST \"$inspectionUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"./adm/app-package.zip\"\" --form \"json={\"packageFileName\":\"$PACKAGEFILENAME\"}\"", returnStdout: true).trim()
+  newResponse = response.readLines().drop(1).join(" ")
+  initiateInspectionJson = new groovy.json.JsonSlurperClassic().parseText(newResponse)
+  println "Inspection Started"
+  println initiateInspectionJson
+  sleep 5
+  String newUrl = SITEBASEURL + "/deployment-management/v1/inspections" + "/" + initiateInspectionJson.uuid +"/"
+  String inspectionResponse = bat(script: "curl --silent --location --request GET \"$newUrl\" --header \"Appian-API-Key: $APIKEY\"" , returnStdout: true).trim()
+  inspectionResponse = inspectionResponse.readLines().drop(1).join(" ")
+  inspectionResponseJson = new groovy.json.JsonSlurperClassic().parseText(inspectionResponse)
+  inspectionStatus = inspectionResponseJson.status
+  while(inspectionStatus.equals("IN_PROGRESS")) {
+    sleep 30
+    inspectionResponse = bat(script: "curl --silent --location --request GET \"$newUrl\" --header \"Appian-API-Key: $APIKEY\"" , returnStdout: true).trim()
+    inspectionResponse = inspectionResponse.readLines().drop(1).join(" ")
+    inspectionResponseJson = new groovy.json.JsonSlurperClassic().parseText(inspectionResponse)
+    inspectionStatus = inspectionResponseJson.status
   }
+  println inspectionResponseJson
+  /*warnings = inspectionResponseJson.summary.problems.totalWarnings
+  errors = inspectionResponseJson.summary.problems.totalErrors
+  if(warnings.equals(0) && errors.equals(0)) {
+    println "Inspection Success"
+  } else{
+    error "Inspection Failed, Pipeline Stopped"
+  }*/
+        
 }
 
 void setProperty(filePath, property, propertyValue) {
@@ -63,7 +83,7 @@ void setProperty(filePath, property, propertyValue) {
 }
 
 def shNoTrace(cmd) {
-  sh '#!/bin/sh -e\n' + cmd
+  bat '#!/bin/sh -e\n' + cmd
 }
 
 return this
