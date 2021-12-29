@@ -44,12 +44,13 @@ void buildPackage(versionPropertyFile) {
     //setProperty("version-manager.properties", "vcPassword", "${REPOPASSWORD}")
     //setProperty("version-manager.properties", "appianObjectsRepoPath", "appian/applications/${APPLICATIONNAME}")
     bat(script:"version-application.bat -vc_username \"$REPOUSERNAME\" -vc_password \"$REPOPASSWORD\" -package_path ../app-package.zip -local_repo_path \"C:/Users/nick.terweeme/appianDevOps\"" )
+    bat "tar -xf ../app-package.zip --wildcards --no-anchored '*.zip' -C ../deploy-package.zip"
   }
 }
 void inspectPackage() {
   
   inspectionUrl = SITEBASEURL +"/deployment-management/v1/inspections"
-  String response=bat( script:"curl --location  --request POST \"$inspectionUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"./adm/app-package.zip\"\" --form \"json={\"packageFileName\":\"$PACKAGEFILENAME\"}\"", returnStdout: true).trim()
+  String response=bat( script:"curl --location  --request POST \"$inspectionUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"./adm/deploy-package.zip\"\" --form \"json={\"packageFileName\":\"$deploy-package.zip\"}\"", returnStdout: true).trim()
   newResponse = response.readLines().drop(1).join(" ")
   initiateInspectionJson = new groovy.json.JsonSlurperClassic().parseText(newResponse)
   println "Inspection Started"

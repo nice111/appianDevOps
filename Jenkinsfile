@@ -25,7 +25,7 @@ errors = null
           bat "mkdir f4a"
           //jenkinsUtils.shNoTrace("curl -H X-JFrog-Art-Api:$ARTIFACTORYAPIKEY -O $ARTIFACTORYURL/appian-devops/adm.zip")
           bat "tar -xf devops/adm.zip -C adm"
-          //bat "tar -xf adm/appian-adm-versioning-client-2.5.13.zip -C adm/appian-version-client" 
+          bat "tar -xf adm/appian-adm-versioning-client-2.5.17.zip -C adm/appian-version-client" 
           def v = unzip zipFile: "adm/appian-adm-versioning-client-2.5.17.zip", dir: "adm/appian-version-client"
           // Retrieve and setup F4A
           //jenkinsUtils.shNoTrace("curl -H X-JFrog-Art-Api:$ARTIFACTORYAPIKEY -O $ARTIFACTORYURL/appian-devops/f4a.zip")
