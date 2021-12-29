@@ -50,7 +50,7 @@ void buildPackage(versionPropertyFile) {
     bat "mkdir newBundle"
     def y = unzip zipFile: "deploy-package.zip", dir: "newBundle"
     bat "if exist \"newBundle/appian\" rmdir /Q /S \"newBundle/appian\""
-    def z = zip zipFile: "../finalPackage.zip" dir: "newBundle"
+    def z = zip zipFile: "../finalPackage.zip", dir: "newBundle"
   }
 }
 void inspectPackage() {
