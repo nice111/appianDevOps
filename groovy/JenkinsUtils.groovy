@@ -45,7 +45,7 @@ void buildPackage(versionPropertyFile) {
     //setProperty("version-manager.properties", "appianObjectsRepoPath", "appian/applications/${APPLICATIONNAME}")
     bat(script:"version-application.bat -vc_username \"$REPOUSERNAME\" -vc_password \"$REPOPASSWORD\" -package_path ../app-package.zip -local_repo_path ./local-repo" )
     bat "tar -xjf ../app-package.zip \"*.zip\""
-    bat "rename \"../application_*.zip\" \"deploy-package.zip\""
+    bat "rename \"application_*.zip\" \"deploy-package.zip\""
     bat "if exist newBundle rmdir /Q /S newBundle"
     bat "mkdir newBundle"
     def y = unzip zipFile: "deploy-package.zip", dir: "newBundle"
