@@ -24,12 +24,12 @@ errors = null
           bat "mkdir adm\\appian-version-client"
           bat "mkdir f4a"
           //jenkinsUtils.shNoTrace("curl -H X-JFrog-Art-Api:$ARTIFACTORYAPIKEY -O $ARTIFACTORYURL/appian-devops/adm.zip")
-          bat "tar -xf adm.zip -C adm"
+          bat "tar -xf devops/adm.zip -C adm"
           //bat "tar -xf adm/appian-adm-versioning-client-2.5.13.zip -C adm/appian-version-client" 
-          def v = unzip zipFile: "adm/appian-adm-versioning-client-2.5.13.zip", dir: "adm/appian-version-client"
+          def v = unzip zipFile: "adm/appian-adm-versioning-client-2.5.17.zip", dir: "adm/appian-version-client"
           // Retrieve and setup F4A
           //jenkinsUtils.shNoTrace("curl -H X-JFrog-Art-Api:$ARTIFACTORYAPIKEY -O $ARTIFACTORYURL/appian-devops/f4a.zip")
-          bat "tar -xf f4a.zip -C f4a"
+          //bat "tar -xf f4a.zip -C f4a"
           //sh "cp -a devops/f4a/test_suites/. f4a/FitNesseForAppian/FitNesseRoot/FitNesseForAppian/Examples/"
           //sh "cp devops/f4a/users.properties f4a/FitNesseForAppian/configs/users.properties"
 
