@@ -43,7 +43,7 @@ void buildPackage(versionPropertyFile) {
     //setProperty("version-manager.properties", "vcUsername", "${REPOUSERNAME}")
     //setProperty("version-manager.properties", "vcPassword", "${REPOPASSWORD}")
     //setProperty("version-manager.properties", "appianObjectsRepoPath", "appian/applications/${APPLICATIONNAME}")
-    bat(script:"version-application.bat -vc_username \"$REPOUSERNAME\" -vc_password \"$REPOPASSWORD\" -package_path ../app-package.zip -local_repo_path \"C:/Users/nick.terweeme/localAppian\"" )
+    bat(script:"version-application.bat -vc_username \"$REPOUSERNAME\" -vc_password \"$REPOPASSWORD\" -package_path ../app-package.zip -local_repo_path \"C:/Users/nick.terweeme/appianDevOps\"" )
   }
 }
 void inspectPackage() {
