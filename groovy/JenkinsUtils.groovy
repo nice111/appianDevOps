@@ -44,13 +44,19 @@ void buildPackage(versionPropertyFile) {
     //setProperty("version-manager.properties", "vcPassword", "${REPOPASSWORD}")
     //setProperty("version-manager.properties", "appianObjectsRepoPath", "appian/applications/${APPLICATIONNAME}")
     bat(script:"version-application.bat -vc_username \"$REPOUSERNAME\" -vc_password \"$REPOPASSWORD\" -package_path ../app-package.zip -local_repo_path ./local-repo" )
-    bat "tar -xjf ../app-package.zip \"*.zip\" -C ../deploy-package.zip"
+    bat "tar -xjf ../app-package.zip \"*.zip\""
+    bat "rename \"../application_*.zip\" \"deploy-package.zip\""
+    bat "if exist newBundle rmdir /Q /S newBundle"
+    bat "mkdir newBundle"
+    def y = unzip zipFile: "deploy-package.zip", dir: "newBundle"
+    bat "if exist \"newBundle/appian\" rmdir /Q /S \"newBundle/appian\""
+    def z = zip zipFile: "../finalPackage.zip" dir: "newBundle"
   }
 }
 void inspectPackage() {
   
   inspectionUrl = SITEBASEURL +"/deployment-management/v1/inspections"
-  String response=bat( script:"curl --location  --request POST \"$inspectionUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"./adm/deploy-package.zip\"\" --form \"json={\"packageFileName\":\"$deploy-package.zip\"}\"", returnStdout: true).trim()
+  String response=bat( script:"curl --location  --request POST \"$inspectionUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"./adm/finalPackage.zip\"\" --form \"json={\"packageFileName\":\"finalPackage.zip\"}\"", returnStdout: true).trim()
   newResponse = response.readLines().drop(1).join(" ")
   initiateInspectionJson = new groovy.json.JsonSlurperClassic().parseText(newResponse)
   println "Inspection Started"
