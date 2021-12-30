@@ -9,7 +9,7 @@ initiateInspectionJson = null
 deploymentResponseJson = null
 warnings = null
 errors = null
-DEPLOYMENTNAME = 'This is a deployment from Jenkins'
+DEPLOYMENTNAME = 'jenkinsDeployment'
 //DEPLOYMENTDESCRIPTION = testProperties['deploymentDescription']
 }
   stages {
@@ -69,21 +69,7 @@ DEPLOYMENTNAME = 'This is a deployment from Jenkins'
     stage("Check Deployment Status") {
       steps {
         script {
-          sleep 15
-          String newUrl = SITEBASEURL + "/deployment-management/v1/deployments" + "/" + deploymentResponseJson.uuid +"/"
-          String deploymentStatus = bat(script: "curl --silent --location --request GET \"$newUrl\" --header \"Appian-API-Key: $APIKEY\"" , returnStdout: true).trim()
-          deploymentStatus = deploymentStatus.readLines().drop(1).join(" ")
-          deploymentStatusJson = new groovy.json.JsonSlurperClassic().parseText(deploymentStatus)
-          statusVar = deploymentStatusJson.status
-          while (statusVar.equals("IN_PROGRESS")) {
-            sleep 30
-            deploymentStatus = bat(script: "curl --silent --location --request GET \"$newUrl\" --header \"Appian-API-Key: $APIKEY\"" , returnStdout: true).trim()
-            deploymentStatus = deploymentStatus.readLines().drop(1).join(" ")
-            deploymentStatusJson = new groovy.json.JsonSlurperClassic().parseText(deploymentStatus)
-            statusVar = deploymentStatusJson.status
-          }
-          println "Deployment Finished and Status is " + statusVar
-
+          
         }
       }
     }
