@@ -9,7 +9,7 @@ initiateInspectionJson = null
 deploymentResponseJson = null
 warnings = null
 errors = null
-//DEPLOYMENTNAME = testProperties['deploymentName']
+DEPLOYMENTNAME = 'This is a deployment from Jenkins'
 //DEPLOYMENTDESCRIPTION = testProperties['deploymentDescription']
 }
   stages {
@@ -55,14 +55,12 @@ errors = null
       }
     }
     
-    /*stage("Create Deployment Request") {
+    stage("Create Deployment Request") {
       steps {
         script {
-          deploymentUrl = SITEBASEURL + "/deployment-management/v1/deployments"
-          String response=bat( script:"curl --silent --location  --request POST \"$deploymentUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"C:/Users/nick.terweeme/Downloads/testAppPackage.zip\"\" --form \"json={\"packageFileName\":\"$PACKAGEFILENAME\",\"name\":\"$DEPLOYMENTNAME\"}\"", returnStdout: true).trim()
-          deploymentResponse = response.readLines().drop(1).join(" ")
-          deploymentResponseJson = new groovy.json.JsonSlurperClassic().parseText(deploymentResponse)
-          println "Deployment Requested"
+          def jenkinsUtils = load "groovy/JenkinsUtils.groovy"
+          jenkinsUtils.createDeployment()
+          
 
 
         }
@@ -88,7 +86,7 @@ errors = null
 
         }
       }
-    }*/
+    }
   }
 }
 

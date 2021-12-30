@@ -85,6 +85,32 @@ void inspectPackage() {
         
 }
 
+void createDeployment() {
+  deploymentUrl = SITEBASEURL + "/deployment-management/v1/deployments"
+  String response=bat( script:"curl --silent --location  --request POST \"$deploymentUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"./adm/finalPackage.zip\"\" --form \"json={\"packageFileName\":\"$finalPackage.zip\",\"name\":\"$DEPLOYMENTNAME\"}\"", returnStdout: true).trim()
+  deploymentResponse = response.readLines().drop(1).join(" ")
+  deploymentResponseJson = new groovy.json.JsonSlurperClassic().parseText(deploymentResponse)
+  println "Deployment Requested"
+}
+
+void checkDeploymentStatus() {
+  sleep 15
+  String newUrl = SITEBASEURL + "/deployment-management/v1/deployments" + "/" + deploymentResponseJson.uuid +"/"
+  String deploymentStatus = bat(script: "curl --silent --location --request GET \"$newUrl\" --header \"Appian-API-Key: $APIKEY\"" , returnStdout: true).trim()
+  deploymentStatus = deploymentStatus.readLines().drop(1).join(" ")
+  deploymentStatusJson = new groovy.json.JsonSlurperClassic().parseText(deploymentStatus)
+  statusVar = deploymentStatusJson.status
+  while (statusVar.equals("IN_PROGRESS")) {
+    sleep 30
+    deploymentStatus = bat(script: "curl --silent --location --request GET \"$newUrl\" --header \"Appian-API-Key: $APIKEY\"" , returnStdout: true).trim()
+    deploymentStatus = deploymentStatus.readLines().drop(1).join(" ")
+    deploymentStatusJson = new groovy.json.JsonSlurperClassic().parseText(deploymentStatus)
+    statusVar = deploymentStatusJson.status
+  }
+  println "Deployment Finished and Status is " + statusVar
+
+}
+
 void setProperty(filePath, property, propertyValue) {
   shNoTrace("sed -i -e 's|.\\?${property}=.*|${property}=${propertyValue}|' ${filePath}")
 }
