@@ -75,13 +75,13 @@ void inspectPackage() {
     inspectionStatus = inspectionResponseJson.status
   }
   println inspectionResponseJson
-  /*warnings = inspectionResponseJson.summary.problems.totalWarnings
+  warnings = inspectionResponseJson.summary.problems.totalWarnings
   errors = inspectionResponseJson.summary.problems.totalErrors
   if(warnings.equals(0) && errors.equals(0)) {
     println "Inspection Success"
   } else{
     error "Inspection Failed, Pipeline Stopped"
-  }*/
+  }
         
 }
 
