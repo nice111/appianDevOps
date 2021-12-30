@@ -87,7 +87,7 @@ void inspectPackage() {
 
 void createDeployment() {
   deploymentUrl = SITEBASEURL + "/deployment-management/v1/deployments"
-  String response=bat( script:"curl --silent --location  --request POST \"$deploymentUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"./adm/finalPackage.zip\"\" --form \"json={\"packageFileName\":\"finalPackage.zip\",\"name\":\"$DEPLOYMENTNAME\"}\"", returnStdout: true).trim()
+  String response=bat( script:"curl --silent --location  --request POST \"$deploymentUrl\" --header \"Appian-API-Key: $APIKEY\" --form \"zipFile=@\"./adm/finalPackage.zip\"\" --form \"json={\"packageFileName\":\"finalPackage.zip\"}\"", returnStdout: true).trim()
   deploymentResponse = response.readLines().drop(1).join(" ")
   deploymentResponseJson = new groovy.json.JsonSlurperClassic().parseText(deploymentResponse)
   println "Deployment Requested"
