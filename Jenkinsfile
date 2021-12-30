@@ -69,7 +69,8 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
     stage("Check Deployment Status") {
       steps {
         script {
-          
+          def jenkinsUtils = load "groovy/JenkinsUtils.groovy"
+          jenkinsUtils.checkDeploymentStatus()
         }
       }
     }
