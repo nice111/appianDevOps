@@ -1,7 +1,7 @@
 pipeline {
   agent any
 environment {
-def propsTwo = readProperties interpolate: true, file: "devops\\deploymentmanagement.test.properties"
+def propsTwo = readProperties file: "devops\\deploymentmanagement.test.properties"
 SITEBASEURL = '5cg9014w3n.appiancorp.com:8080/suite'
 APIKEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkMzYzOTQ2OS1mOTZmLTQ3Y2UtOGYyOS1kZTVhZDkwMTdhM2IifQ.eqfVl_7ASfMFOAkBnmUe7kdQOmK8ybJAV42HGbL5VUA'
 PACKAGEFILENAME = 'app-package.zip'
