@@ -20,7 +20,7 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
           // Retrieve and setup AVM
           println propsTwo
           assert propsTwo["deploymentName"] == "test"
-          println toString=(propsTwo["deploymentName"])
+          println toString(propsTwo["deploymentName"])
           bat "if exist adm rmdir /Q /S adm"
           bat "if exist f4a rmdir /Q /S f4a"
           bat "mkdir adm\\appian-version-client"
