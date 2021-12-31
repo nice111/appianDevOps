@@ -18,7 +18,7 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
       steps {
         script {
           // Retrieve and setup AVM
-          
+          println propsTwo
           bat "if exist adm rmdir /Q /S adm"
           bat "if exist f4a rmdir /Q /S f4a"
           bat "mkdir adm\\appian-version-client"
