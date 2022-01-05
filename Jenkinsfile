@@ -11,6 +11,7 @@ deploymentResponseJson = null
 warnings = null
 errors = null
 DEPLOYMENTNAME = 'jenkinsDeployment'
+def workspace = env.WORKSPACE
 //DEPLOYMENTDESCRIPTION = testProperties['deploymentDescription']
 }
   stages {
@@ -20,6 +21,7 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
         script {
           // Retrieve and setup AVM
           println propsTwo.getClass()
+          println workspace
           Properties propOne = new Properties()
           File propFile = new File('deploymentmanagement.test.properties')
           propFile.withInputStream {
