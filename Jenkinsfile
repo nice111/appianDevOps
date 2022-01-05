@@ -2,16 +2,15 @@ pipeline {
   agent any
 environment {
 
-SITEBASEURL = '5cg9014w3n.appiancorp.com:8080/suite'
-APIKEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkMzYzOTQ2OS1mOTZmLTQ3Y2UtOGYyOS1kZTVhZDkwMTdhM2IifQ.eqfVl_7ASfMFOAkBnmUe7kdQOmK8ybJAV42HGbL5VUA'
-PACKAGEFILENAME = 'app-package.zip'
+SITEBASEURL = null
+APIKEY = null
+PACKAGEFILENAME = null
 initiateInspectionJson = null
 deploymentResponseJson = null
 warnings = null
 errors = null
-DEPLOYMENTNAME = 'jenkinsDeployment'
-
-//DEPLOYMENTDESCRIPTION = testProperties['deploymentDescription']
+DEPLOYMENTNAME = null
+DEPLOYMENTDESCRIPTION = null
 }
   stages {
     
@@ -19,10 +18,6 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
       steps {
         script {
           // Retrieve and setup AVM
-          def propsTwo = readProperties file: "devops\\deploymentmanagement.test.properties"
-          println propsTwo
-          println propsTwo.getClass()
-          def testing = propsTwo['deploymentDescription']
           
           bat "if exist adm rmdir /Q /S adm"
           bat "if exist f4a rmdir /Q /S f4a"
@@ -45,6 +40,12 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
     stage("Build Package") {
       steps {
         script {
+          def properties = readProperties file: "devops\\deploymentmanagement.test.properties"
+          DEPLOYMENTDESCRIPTION = properties['deploymentDescription']
+          DEPLOYMENTNAME = properties['deploymentName']
+          SITEBASEURL = properties['url']
+          APIKEY = properties['siteApiKey']
+          PACKAGEFILENAME = properties['packageFileName']
           def jenkinsUtils = load "groovy/JenkinsUtils.groovy"
           jenkinsUtils.buildPackage("version-manager.properties")
         }
@@ -54,6 +55,12 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
     stage("Inspect Package") {
       steps {
         script {
+          def properties = readProperties file: "devops\\deploymentmanagement.test.properties"
+          DEPLOYMENTDESCRIPTION = properties['deploymentDescription']
+          DEPLOYMENTNAME = properties['deploymentName']
+          SITEBASEURL = properties['url']
+          APIKEY = properties['siteApiKey']
+          PACKAGEFILENAME = properties['packageFileName']
           def jenkinsUtils = load "groovy/JenkinsUtils.groovy"
           jenkinsUtils.inspectPackage()
         }
@@ -63,6 +70,12 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
     stage("Create Deployment Request") {
       steps {
         script {
+          def properties = readProperties file: "devops\\deploymentmanagement.test.properties"
+          DEPLOYMENTDESCRIPTION = properties['deploymentDescription']
+          DEPLOYMENTNAME = properties['deploymentName']
+          SITEBASEURL = properties['url']
+          APIKEY = properties['siteApiKey']
+          PACKAGEFILENAME = properties['packageFileName']
           def jenkinsUtils = load "groovy/JenkinsUtils.groovy"
           jenkinsUtils.createDeployment()
           
@@ -74,6 +87,12 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
     stage("Check Deployment Status") {
       steps {
         script {
+          def properties = readProperties file: "devops\\deploymentmanagement.test.properties"
+          DEPLOYMENTDESCRIPTION = properties['deploymentDescription']
+          DEPLOYMENTNAME = properties['deploymentName']
+          SITEBASEURL = properties['url']
+          APIKEY = properties['siteApiKey']
+          PACKAGEFILENAME = properties['packageFileName']
           def jenkinsUtils = load "groovy/JenkinsUtils.groovy"
           jenkinsUtils.checkDeploymentStatus()
         }
