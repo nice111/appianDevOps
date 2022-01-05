@@ -21,7 +21,7 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
           // Retrieve and setup AVM
           println propsTwo.getClass()
           Properties propOne = new Properties()
-          File propFile = new File('devops/deploymentmanagement.test.properties')
+          File propFile = new File('deploymentmanagement.test.properties')
           propFile.withInputStream {
             propOne.load(it)
           }
