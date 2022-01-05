@@ -18,8 +18,8 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
       steps {
         script {
           // Retrieve and setup AVM
-          println propsTwo
-          assert propsTwo["deploymentName"] == "test" : "test Failed"
+          println propsTwo.getClass()
+          
           
           bat "if exist adm rmdir /Q /S adm"
           bat "if exist f4a rmdir /Q /S f4a"
