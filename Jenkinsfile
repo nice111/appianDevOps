@@ -23,10 +23,9 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
           def workspace = env.WORKSPACE
           println propsTwo.getClass()
           println workspace
-          Properties propOne = new Properties()
-          File propFile = new File('C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Appian Dev Ops\\deploymentmanagement.test.properties')
-          propFile.withInputStream {
-            propOne.load(it)
+          def properties = new Properties()
+          this.getClass().getResource('/deploymentmanagement.test.properties').withInputStream {
+            properties.load(it)
           }
           assert propOne.deploymentName == "test"
           
