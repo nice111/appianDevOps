@@ -20,6 +20,8 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
       steps {
         script {
           // Retrieve and setup AVM
+          println propsTwo
+          println propsTwo.getClass()
           def testing = propsTwo['deploymentDescription']
           
           bat "if exist adm rmdir /Q /S adm"
