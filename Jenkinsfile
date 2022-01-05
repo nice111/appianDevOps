@@ -1,7 +1,6 @@
 pipeline {
   agent any
 environment {
-def propsTwo = readProperties file: "devops\\deploymentmanagement.test.properties"
 
 SITEBASEURL = '5cg9014w3n.appiancorp.com:8080/suite'
 APIKEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkMzYzOTQ2OS1mOTZmLTQ3Y2UtOGYyOS1kZTVhZDkwMTdhM2IifQ.eqfVl_7ASfMFOAkBnmUe7kdQOmK8ybJAV42HGbL5VUA'
@@ -20,6 +19,7 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
       steps {
         script {
           // Retrieve and setup AVM
+          def propsTwo = readProperties file: "devops\\deploymentmanagement.test.properties"
           println propsTwo
           println propsTwo.getClass()
           def testing = propsTwo['deploymentDescription']
