@@ -24,7 +24,7 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
           println propsTwo.getClass()
           println workspace
           Properties propOne = new Properties()
-          File propFile = new File('${workspace}\\deploymentmanagement.test.properties')
+          File propFile = new File('C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\Appian Dev Ops\\deploymentmanagement.test.properties')
           propFile.withInputStream {
             propOne.load(it)
           }
