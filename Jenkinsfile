@@ -20,14 +20,7 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
       steps {
         script {
           // Retrieve and setup AVM
-          def workspace = env.WORKSPACE
-          println propsTwo.getClass()
-          println workspace
-          def properties = new Properties()
-          this.getClass().getResource('C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\\"Appian Dev Ops\"\\deploymentmanagement.test.properties').withInputStream {
-            properties.load(it)
-          }
-          assert propOne.deploymentName == "test"
+          def testing = propsTwo['deploymentDescription']
           
           bat "if exist adm rmdir /Q /S adm"
           bat "if exist f4a rmdir /Q /S f4a"
