@@ -2,11 +2,7 @@ pipeline {
   agent any
 environment {
 def propsTwo = readProperties file: "devops\\deploymentmanagement.test.properties"
-Properties propOne = new Properties()
-File propFile = new File('devops\\deploymentmanagement.test.properties')
-propFile.withInputStream {
-  propOne.load(it)
-}
+
 SITEBASEURL = '5cg9014w3n.appiancorp.com:8080/suite'
 APIKEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkMzYzOTQ2OS1mOTZmLTQ3Y2UtOGYyOS1kZTVhZDkwMTdhM2IifQ.eqfVl_7ASfMFOAkBnmUe7kdQOmK8ybJAV42HGbL5VUA'
 PACKAGEFILENAME = 'app-package.zip'
@@ -24,6 +20,11 @@ DEPLOYMENTNAME = 'jenkinsDeployment'
         script {
           // Retrieve and setup AVM
           println propsTwo.getClass()
+          Properties propOne = new Properties()
+          File propFile = new File('devops\\deploymentmanagement.test.properties')
+          propFile.withInputStream {
+            propOne.load(it)
+          }
           assert propOne.deploymentName == "test"
           
           bat "if exist adm rmdir /Q /S adm"
