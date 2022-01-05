@@ -11,7 +11,7 @@ deploymentResponseJson = null
 warnings = null
 errors = null
 DEPLOYMENTNAME = 'jenkinsDeployment'
-def workspace = env.WORKSPACE
+
 //DEPLOYMENTDESCRIPTION = testProperties['deploymentDescription']
 }
   stages {
@@ -20,6 +20,7 @@ def workspace = env.WORKSPACE
       steps {
         script {
           // Retrieve and setup AVM
+          def workspace = env.WORKSPACE
           println propsTwo.getClass()
           println workspace
           Properties propOne = new Properties()
